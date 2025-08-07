@@ -211,21 +211,15 @@
 </head>
 <body>
     <!-- Background Video -->
-    <video class="video-background" autoplay muted loop>
-        <source src="./video.mp4" type="video/mp4">
-        <!-- Fallback for browsers that don't support the video -->
-    </video>
+    <video class="video-background" autoplay loop id="bgVideo">
+    <source src="./video.mp4" type="video/mp4">
+</video>
     
     <!-- Dark Overlay -->
     <div class="overlay"></div>
     
-    <!-- Background Audio -->
-    <audio id="bgAudio" autoplay loop>
-        <source src="./song.mp3" type="audio/mpeg">
-        <!-- Note: In a real implementation, you'd use an actual sad love song -->
-    </audio>
-    <button onclick="document.getElementById('bgAudio').play()" style="position:fixed;top:20px;right:20px;z-index:1000;">
-    🎶
+  <button onclick="document.getElementById('bgVideo').play()" style="position:fixed;top:20px;right:20px;z-index:999;">
+    &#127925; Play Music
 </button>
 
     <!-- Title Overlay -->
@@ -386,3 +380,4 @@
 </body>
 
 </html>
+
