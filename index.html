@@ -74,10 +74,10 @@
 
     #tapPrompt {
       position: absolute;
-      bottom: 30px;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       padding: 10px 24px;
       border-radius: 25px;
       color: #ffffffcc;
@@ -86,7 +86,7 @@
       text-align: center;
       z-index: 3;
       opacity: 1;
-      transition: opacity 1.2s ease;
+      transition: opacity 1s ease;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(6px);
     }
@@ -111,7 +111,7 @@
   </div>
 
   <!-- Tap Prompt -->
-  <div id="tapPrompt">&#128266; Tap anywhere for sound</div>
+  <div id="tapPrompt">&#x1F50A; Tap anywhere for sound</div>
 
   <script>
     const lines = [
@@ -120,7 +120,7 @@
       "Your name was once a smileâ¦",
       "Now it's just an echo in my chest.",
       "I just want to express my feelings.",
-      "So I chose a song for myself&#10084;&#65039;"
+      "So I chose a song for myself &#x2764;&#xFE0F;"
     ];
 
     const typedText = document.getElementById("typedText");
@@ -142,7 +142,7 @@
             charIndex = 0;
             lineIndex++;
             typeLine();
-          }, 3000); // 3-second delay between full lines
+          }, 3000); // 3-second pause per line
         }
       } else {
         document.body.classList.add("fade-out");
