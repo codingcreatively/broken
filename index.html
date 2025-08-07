@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Echoes of Us</title>
+  <title>Story Of Heart</title>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display&display=swap" rel="stylesheet">
   <style>
     * {
@@ -44,7 +44,7 @@
       font-family: 'Dancing Script', cursive;
       text-shadow: 0 0 10px rgba(255,255,255,0.1);
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     .cursor {
@@ -71,6 +71,28 @@
         transform: scale(1.03);
       }
     }
+
+    #tapPrompt {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 20px;
+      border-radius: 20px;
+      color: white;
+      font-size: 0.95rem;
+      font-family: 'Playfair Display', serif;
+      text-align: center;
+      z-index: 3;
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
+
+    #tapPrompt.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -86,15 +108,23 @@
     <span id="typedText"></span><span class="cursor"></span>
   </div>
 
+  <!-- Tap Prompt -->
+  <div id="tapPrompt">\uD83D\uDD0A Tap anywhere for sound</div>
+
   <script>
     const lines = [
-      "Some stories are never finished...",
-      "They whisper through every silence.",
-      "Your name was once a smile...",
-      "Now it's just an echo in my chest."
-    ];
+  "Some stories are never finished\u2026",
+  "They whisper through every silence.",
+  "Your name was once a smile\u2026",
+  "Now it's just an echo in my chest.",
+  "I just want to express my feelings.",
+  "So I chose a song for myself\u2764"
+];
 
     const typedText = document.getElementById("typedText");
+    const tapPrompt = document.getElementById("tapPrompt");
+    const video = document.getElementById("bgVideo");
+
     let lineIndex = 0;
     let charIndex = 0;
 
@@ -110,7 +140,7 @@
             charIndex = 0;
             lineIndex++;
             typeLine();
-          }, 1500);
+          }, 3000); // line stay time
         }
       } else {
         document.body.classList.add("fade-out");
@@ -121,14 +151,26 @@
     }
 
     window.onload = () => {
-      const video = document.getElementById('bgVideo');
       video.play().catch(() => {
-        // Fallback if autoplay is blocked: play on click
-        document.addEventListener('click', () => video.play(), { once: true });
+        // Autoplay might be blocked
       });
+
+      // Hide tap prompt after 5s
+      setTimeout(() => {
+        tapPrompt.classList.add('hidden');
+      }, 5000);
 
       typeLine();
     };
+
+    // Tap to unmute
+    document.addEventListener('click', () => {
+      if (video.muted) {
+        video.muted = false;
+        video.play();
+      }
+      tapPrompt.classList.add('hidden');
+    }, { once: true });
   </script>
 </body>
 </html>
