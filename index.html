@@ -77,16 +77,18 @@
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px 20px;
-      border-radius: 20px;
-      color: white;
-      font-size: 0.95rem;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 10px 24px;
+      border-radius: 25px;
+      color: #ffffffcc;
+      font-size: 1rem;
       font-family: 'Playfair Display', serif;
       text-align: center;
       z-index: 3;
       opacity: 1;
-      transition: opacity 1s ease;
+      transition: opacity 1.2s ease;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(6px);
     }
 
     #tapPrompt.hidden {
@@ -109,17 +111,17 @@
   </div>
 
   <!-- Tap Prompt -->
-  <div id="tapPrompt">\uD83D\uDD0A Tap anywhere for sound</div>
+  <div id="tapPrompt">&#128266; Tap anywhere for sound</div>
 
   <script>
     const lines = [
-  "Some stories are never finished\u2026",
-  "They whisper through every silence.",
-  "Your name was once a smile\u2026",
-  "Now it's just an echo in my chest.",
-  "I just want to express my feelings.",
-  "So I chose a song for myself\u2764"
-];
+      "Some stories are never finishedâ¦",
+      "They whisper through every silence.",
+      "Your name was once a smileâ¦",
+      "Now it's just an echo in my chest.",
+      "I just want to express my feelings.",
+      "So I chose a song for myself&#10084;&#65039;"
+    ];
 
     const typedText = document.getElementById("typedText");
     const tapPrompt = document.getElementById("tapPrompt");
@@ -131,16 +133,16 @@
     function typeLine() {
       if (lineIndex < lines.length) {
         if (charIndex < lines[lineIndex].length) {
-          typedText.textContent += lines[lineIndex].charAt(charIndex);
+          typedText.innerHTML += lines[lineIndex].charAt(charIndex);
           charIndex++;
           setTimeout(typeLine, 60);
         } else {
           setTimeout(() => {
-            typedText.textContent = "";
+            typedText.innerHTML = "";
             charIndex = 0;
             lineIndex++;
             typeLine();
-          }, 3000); // line stay time
+          }, 3000); // 3-second delay between full lines
         }
       } else {
         document.body.classList.add("fade-out");
