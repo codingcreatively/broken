@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heartbreak Memory Lane</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Heartbreak Memory</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&display=swap');
         
@@ -98,42 +97,76 @@
     transition: all 0.8s ease;
 }
 
-        .title-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 10;
-            opacity: 0;
-            animation: fadeInTitle 3s ease-in-out 2s forwards;
-        }
+/* Title Overlay */
+.title-overlay {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+    opacity: 0;
+    animation: fadeInTitle 2s ease-out forwards;
+}
 
-        .main-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 4rem;
-            color: rgba(255, 255, 255, 0.95);
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
-            margin-bottom: 1rem;
-        }
+@keyframes fadeInTitle {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-30px) scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0) scale(1);
+    }
+}
 
-        .subtitle {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-style: italic;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        }
+.main-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.5rem;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    margin-bottom: 0.5rem;
+    animation: glowText 2s ease-in-out infinite alternate;
+}
 
-        @keyframes fadeInTitle {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -60%);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(-50%, -50%);
-            }
-        }
+@keyframes glowText {
+    from {
+        text-shadow: 0 0 5px rgba(255,255,255,0.4);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(255,255,255,0.9);
+    }
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-style: italic;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Tap Prompt */
+.tap-prompt {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 10px 20px;
+    border-radius: 30px;
+    animation: fadePulse 2s ease-in-out infinite;
+    z-index: 50;
+    transition: opacity 1s ease-out;
+}
+
+@keyframes fadePulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
 
         @keyframes fadeInCards {
             0% {
@@ -187,6 +220,15 @@
     </style>
 </head>
 <body>
+        <!-- Animated Title -->
+<div class="title-overlay">
+  <h1 class="main-title">Echoes of Us</h1>
+  <p class="subtitle">Where memories linger and hearts remember</p>
+</div>
+
+<!-- Tap Prompt -->
+<div id="tapPrompt" class="tap-prompt">Tap anywhere to play &#127925;</div>
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Background Video -->
     <video class="video-background" autoplay loop id="bgVideo">
     <source src="./video.mp4" type="video/mp4">
@@ -194,16 +236,6 @@
     
     <!-- Dark Overlay -->
     <div class="overlay"></div>
-    
-  <button onclick="document.getElementById('bgVideo').play()" style="position:fixed;top:20px;right:20px;z-index:999;">
-    &#127925; Play Music
-</button>
-
-    <!-- Title Overlay -->
-    <div class="title-overlay">
-        <h1 class="main-title">Echoes of Us</h1>
-        <p class="subtitle">Where memories linger and hearts remember</p>
-    </div>
 
     <!-- Floating Hearts -->
     <div class="floating-hearts" id="heartsContainer"></div>
@@ -316,20 +348,32 @@
             // Update center card periodically
             setInterval(updateCenterCard, 100);
             
-            // Handle audio autoplay (some browsers block it)
-            const audio = document.getElementById('bgAudio');
-            const playAudio = () => {
-                audio.play().catch(e => {
-                    console.log('Audio autoplay blocked by browser');
-                    // Create a subtle click handler to start audio
-                    document.addEventListener('click', () => {
-                        audio.play();
-                    }, { once: true });
-                });
-            };
-            
-            setTimeout(playAudio, 500);
+// Play video on first tap & hide prompt
+document.addEventListener('click', () => {
+    const video = document.getElementById('bgVideo');
+    const prompt = document.getElementById('tapPrompt');
+
+    if (video && video.paused) {
+        video.play().catch(e => console.log("Autoplay blocked:", e));
+    }
+
+    if (prompt) {
+        prompt.style.display = 'none';
+    }
+}, { once: true });
+
+// Auto-fade the prompt after 5 seconds
+window.addEventListener('load', () => {
+    const prompt = document.getElementById('tapPrompt');
+    setTimeout(() => {
+        if (prompt) {
+            prompt.style.opacity = '0';
+            setTimeout(() => {
+                prompt.style.display = 'none';
+            }, 1000); // After fade
         }
+    }, 5000); // 5 seconds delay
+});
 
         // Start everything when page loads
         window.addEventListener('load', init);
@@ -344,5 +388,6 @@
 </body>
 
 </html>
+
 
 
