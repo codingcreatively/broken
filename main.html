@@ -338,17 +338,17 @@
             }, 20000);
         }
 
-        // Initialize the page
-        function init() {
-            createMemoryCards();
-            
-            // Start heart animation
-            setInterval(createFloatingHeart, 3000);
-            
-            // Update center card periodically
-            setInterval(updateCenterCard, 100);
-            
-// Play video on first tap & hide prompt
+        // â Initialize the page
+function init() {
+    createMemoryCards();
+    setInterval(createFloatingHeart, 3000);
+    setInterval(updateCenterCard, 100);
+}
+
+// â Start everything when page loads
+window.addEventListener('load', init);
+
+// â Play video on first tap & hide prompt
 document.addEventListener('click', () => {
     const video = document.getElementById('bgVideo');
     const prompt = document.getElementById('tapPrompt');
@@ -362,7 +362,7 @@ document.addEventListener('click', () => {
     }
 }, { once: true });
 
-// Auto-fade the prompt after 5 seconds
+// â Auto-fade the prompt after 5 seconds
 window.addEventListener('load', () => {
     const prompt = document.getElementById('tapPrompt');
     setTimeout(() => {
@@ -372,22 +372,20 @@ window.addEventListener('load', () => {
                 prompt.style.display = 'none';
             }, 1000); // After fade
         }
-    }, 5000); // 5 seconds delay
+    }, 5000);
 });
 
-        // Start everything when page loads
-        window.addEventListener('load', init);
-        
-        // Handle window resize
-        window.addEventListener('resize', updateCenterCard);
+// â Handle window resize
+window.addEventListener('resize', updateCenterCard);
 
-        // Prevent context menu and selection for immersive experience
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('selectstart', e => e.preventDefault());
+// â Prevent context menu and text selection
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('selectstart', e => e.preventDefault());
     </script>
 </body>
 
 </html>
+
 
 
 
